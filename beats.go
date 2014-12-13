@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"github.com/karlseguin/beats/core"
 	"time"
 )
 
@@ -26,7 +27,7 @@ func Start(configPath string) {
 func beat(config *Configuration) {
 	defer swallow()
 	l := len(config.checks)
-	results := make([]*Result, l)
+	results := make([]*core.Result, l)
 	for i := 0; i < l; i++ {
 		results[i] = config.checks[i].Run()
 	}

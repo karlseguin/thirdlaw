@@ -2,13 +2,15 @@ package beats
 
 import (
 	"gopkg.in/karlseguin/typed.v1"
+	"github.com/karlseguin/beats/core"
+	"github.com/karlseguin/beats/checks"
 	"log"
 	"time"
 )
 
 type Configuration struct {
 	frequency time.Duration
-	checks    []Check
+	checks    []core.Check
 }
 
 func loadConfig(path string) *Configuration {
@@ -17,16 +19,16 @@ func loadConfig(path string) *Configuration {
 		panic(err)
 	}
 
-	checks := t.Objects("checks")
-	if len(checks) == 0 {
+	chks := t.Objects("checks")
+	if len(chks) == 0 {
 		log.Println("0 checks configured")
 	}
 	c := &Configuration{
-		checks:    make([]Check, len(checks)),
+		checks:    make([]core.Check, len(chks)),
 		frequency: time.Millisecond * time.Duration(t.IntOr("frequency", 10000)),
 	}
-	for i, check := range checks {
-		c.checks[i] = CheckFactory(check)
+	for i, check := range chks {
+		c.checks[i] = checks.New(check)
 	}
 	return c
 }
