@@ -1,9 +1,9 @@
-package beats
+package thirdlaw
 
 import (
-	"github.com/karlseguin/beats/checks"
-	"github.com/karlseguin/beats/core"
-	"github.com/karlseguin/beats/outputs"
+	"github.com/karlseguin/thirdlaw/checks"
+	"github.com/karlseguin/thirdlaw/core"
+	"github.com/karlseguin/thirdlaw/outputs"
 	"gopkg.in/karlseguin/typed.v1"
 	"log"
 	"time"

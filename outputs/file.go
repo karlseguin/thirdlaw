@@ -1,7 +1,7 @@
 package outputs
 
 import (
-	"github.com/karlseguin/beats/core"
+	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"log"
 	"os"

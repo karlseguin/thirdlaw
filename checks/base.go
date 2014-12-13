@@ -2,7 +2,7 @@ package checks
 
 import (
 	"fmt"
-	"github.com/karlseguin/beats/core"
+	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"strings"
 	"time"

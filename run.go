@@ -1,7 +1,7 @@
-package beats
+package thirdlaw
 
 import (
-	"github.com/karlseguin/beats/core"
+	"github.com/karlseguin/thirdlaw/core"
 	"log"
 	"os"
 	"os/signal"
@@ -11,12 +11,12 @@ import (
 
 var reload bool
 
-func Start(configPath string) {
+func Run(configPath string) {
 	config := loadConfig(configPath)
 	signals()
 	for {
 		time.Sleep(config.frequency)
-		beat(config)
+		run(config)
 		if reload {
 			config = loadConfig(configPath)
 			reload = false
@@ -24,7 +24,7 @@ func Start(configPath string) {
 	}
 }
 
-func beat(config *Configuration) {
+func run(config *Configuration) {
 	defer swallow()
 	l := len(config.checks)
 

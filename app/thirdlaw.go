@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/karlseguin/beats"
+	"github.com/karlseguin/thirdlaw"
 )
 
 func main() {
 	configPath := "config.json"
-	beats.Start(configPath)
+	thirdlaw.Run(configPath)
 }

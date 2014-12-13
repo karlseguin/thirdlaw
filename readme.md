@@ -1,2 +1,2 @@
-# Beats
-Run checks and output results
+# Third Law
+Do an action and react
