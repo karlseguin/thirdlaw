@@ -5,12 +5,14 @@ import (
 	"log"
 	"time"
 )
+
 var serializedError = []byte(`{"error": "failed to serialize results"}`)
 
 type Result struct {
-	Ok      bool   `json:"ok"`
-	Name    string `json:"name"`
-	Message string `json:"message"`
+	Ok       bool   `json:"ok"`
+	Name     string `json:"name"`
+	Message  string `json:"message"`
+	Milliseconds int    `json:"ms"`
 }
 
 func Success() *Result {
@@ -19,8 +21,8 @@ func Success() *Result {
 
 type Results struct {
 	serialized []byte
-	Time time.Time   `json:"time"`
-	List []*Result   `json:"results"`
+	Time       time.Time `json:"time"`
+	List       []*Result `json:"results"`
 }
 
 func NewResults(list []*Result) *Results {

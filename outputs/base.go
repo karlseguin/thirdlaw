@@ -2,9 +2,9 @@ package outputs
 
 import (
 	"fmt"
-	"io"
 	"github.com/karlseguin/beats/core"
 	"gopkg.in/karlseguin/typed.v1"
+	"io"
 	"strings"
 )
 

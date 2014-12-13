@@ -5,6 +5,7 @@ import (
 	"github.com/karlseguin/beats/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"strings"
+	"time"
 )
 
 type Base struct {
@@ -17,8 +18,10 @@ func (c *Base) Name() string {
 }
 
 func (c *Base) Run() *core.Result {
+	s := time.Now()
 	res := c.runner.Run()
 	res.Name = c.name
+	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
 	return res
 }
 
