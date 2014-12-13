@@ -1,11 +1,11 @@
 package beats
 
 import (
+	"github.com/karlseguin/beats/core"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
-	"github.com/karlseguin/beats/core"
 	"time"
 )
 
@@ -27,9 +27,26 @@ func Start(configPath string) {
 func beat(config *Configuration) {
 	defer swallow()
 	l := len(config.checks)
-	results := make([]*core.Result, l)
+
+	success := make([]*core.Result, 0, l)
+	failures := make([]*core.Result, 0, l)
+
 	for i := 0; i < l; i++ {
-		results[i] = config.checks[i].Run()
+		result := config.checks[i].Run()
+		if result.Ok {
+			success = append(success, result)
+		} else {
+			failures = append(failures, result)
+		}
+	}
+
+	outputs, results := config.onSuccess, success
+	if len(failures) > 0 {
+		outputs, results = config.onFailure, failures
+	}
+
+	for _, output := range outputs {
+		output.Process(results)
 	}
 }
 

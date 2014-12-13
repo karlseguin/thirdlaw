@@ -1,14 +1,14 @@
 package checks
 
 import (
-	"gopkg.in/karlseguin/typed.v1"
-	"github.com/karlseguin/beats/core"
-	"strings"
 	"fmt"
+	"github.com/karlseguin/beats/core"
+	"gopkg.in/karlseguin/typed.v1"
+	"strings"
 )
 
 type Base struct {
-	name string
+	name   string
 	runner core.Runner
 }
 
@@ -17,7 +17,9 @@ func (c *Base) Name() string {
 }
 
 func (c *Base) Run() *core.Result {
-	return c.runner.Run()
+	res := c.runner.Run()
+	res.Name = c.name
+	return res
 }
 
 func New(t typed.Typed) core.Check {
@@ -26,7 +28,7 @@ func New(t typed.Typed) core.Check {
 		return build(t, NewHttp(t))
 	default:
 		b, _ := t.ToBytes("")
-		panic(fmt.Errorf("missing type for  %v", string(b)))
+		panic(fmt.Errorf("unknown type %v", string(b)))
 	}
 }
 
@@ -37,7 +39,7 @@ func build(t typed.Typed, runner core.Runner) core.Check {
 		panic(fmt.Errorf("missing name %v", string(b)))
 	}
 	c := &Base{
-		name: name,
+		name:   name,
 		runner: runner,
 	}
 	return c

@@ -1,8 +1,8 @@
 package checks
 
 import (
-	"gopkg.in/karlseguin/typed.v1"
 	"github.com/karlseguin/beats/core"
+	"gopkg.in/karlseguin/typed.v1"
 	"time"
 )
 
@@ -13,7 +13,7 @@ type Http struct {
 }
 
 func (c *Http) Run() *core.Result {
-	return core.OKResult
+	return core.Success()
 }
 
 func NewHttp(t typed.Typed) *Http {

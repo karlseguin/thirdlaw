@@ -1,8 +1,11 @@
 package core
 
-var OKResult = &Result{true, ""}
-
 type Result struct {
 	Ok      bool
+	Name    string
 	Message string
+}
+
+func Success() *Result {
+	return &Result{Ok: true, Message: ""}
 }
