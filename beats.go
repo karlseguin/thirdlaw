@@ -40,11 +40,11 @@ func beat(config *Configuration) {
 		}
 	}
 
-	outputs, results := config.onSuccess, success
+	outputs, list := config.onSuccess, success
 	if len(failures) > 0 {
-		outputs, results = config.onFailure, failures
+		outputs, list = config.onFailure, failures
 	}
-
+	results := core.NewResults(list)
 	for _, output := range outputs {
 		output.Process(results)
 	}
