@@ -45,7 +45,7 @@ func loadConfig(path string) *Configuration {
 	}
 
 	for name, _ := range actns {
-		c.actions[name] = actions.New(actns.Object(name))
+		c.actions[name] = actions.New(name, actns.Object(name))
 	}
 	for i, check := range chks {
 		c.checks[i] = checks.New(c.actions, check)

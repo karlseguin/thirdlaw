@@ -5,6 +5,7 @@ import (
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"strings"
+	"log"
 	"time"
 )
 
@@ -25,7 +26,9 @@ func (c *Base) Run() *core.Result {
 	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
 	if res.Ok == false {
 		for _, fail := range c.onFail {
-			fail.Run()
+			if err := fail.Run(); err != nil {
+				log.Println(err)
+			}
 		}
 	}
 	return res
