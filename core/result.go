@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 )
@@ -9,14 +10,22 @@ import (
 var serializedError = []byte(`{"error": "failed to serialize results"}`)
 
 type Result struct {
-	Ok       bool   `json:"ok"`
-	Name     string `json:"name"`
-	Message  string `json:"message"`
+	Ok           bool   `json:"ok"`
+	Name         string `json:"name"`
+	Message      string `json:"message"`
 	Milliseconds int    `json:"ms"`
 }
 
 func Success() *Result {
 	return &Result{Ok: true, Message: ""}
+}
+
+func Error(err error) *Result {
+	return &Result{Ok: false, Message: err.Error()}
+}
+
+func Failuref(format string, args ...interface{}) *Result {
+	return &Result{Ok: false, Message: fmt.Sprintf(format, args...)}
 }
 
 type Results struct {

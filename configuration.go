@@ -27,7 +27,7 @@ func loadConfig(path string) *Configuration {
 		log.Println("WARN 0 checks configured")
 	}
 
-	onFailure, onSuccess := t.Object("outputs").Objects("failrue"), t.Object("outputs").Objects("success")
+	onFailure, onSuccess := t.Object("outputs").Objects("failure"), t.Object("outputs").Objects("success")
 	if len(onFailure) == 0 {
 		log.Println("WARN 0 outputs configured for failure")
 	}
