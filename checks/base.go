@@ -10,6 +10,7 @@ import (
 
 type Base struct {
 	name   string
+	onFail []core.Action
 	runner core.Runner
 }
 
@@ -22,28 +23,41 @@ func (c *Base) Run() *core.Result {
 	res := c.runner.Run()
 	res.Name = c.name
 	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
+	if res.Ok == false {
+		for _, fail := range c.onFail {
+			fail.Run()
+		}
+	}
 	return res
 }
 
-func New(t typed.Typed) core.Check {
+func New(actions map[string]core.Action, t typed.Typed) core.Check {
 	switch strings.ToLower(t.String("type")) {
 	case "http":
-		return build(t, NewHttp(t))
+		return build(actions, t, NewHttp(t))
 	default:
-		b, _ := t.ToBytes("")
-		panic(fmt.Errorf("unknown type %v", string(b)))
+		panic(fmt.Errorf("unknown type %v", string(t.MustBytes(""))))
 	}
 }
 
-func build(t typed.Typed, runner core.Runner) core.Check {
+func build(actions map[string]core.Action, t typed.Typed, runner core.Runner) core.Check {
 	name, ok := t.StringIf("name")
 	if ok == false {
-		b, _ := t.ToBytes("")
-		panic(fmt.Errorf("missing name %v", string(b)))
+		panic(fmt.Errorf("missing name %v", string(t.MustBytes(""))))
 	}
 	c := &Base{
 		name:   name,
 		runner: runner,
+	}
+	if failNames := t.Strings("onFail"); len(failNames) > 0 {
+		c.onFail = make([]core.Action, len(failNames))
+		for i, n := range failNames {
+			action, ok := actions[n]
+			if ok == false {
+				panic(fmt.Errorf("unknown action %q for check %q", n, name))
+			}
+			c.onFail[i] = action
+		}
 	}
 	return c
 }

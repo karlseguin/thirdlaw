@@ -19,8 +19,7 @@ func New(t typed.Typed) core.Output {
 	case "stderr":
 		return NewStderr(t)
 	default:
-		b, _ := t.ToBytes("")
-		panic(fmt.Errorf("invalid output type %v", string(b)))
+		panic(fmt.Errorf("invalid output type %v", string(t.MustBytes(""))))
 	}
 }
 
