@@ -1,7 +1,34 @@
 {
-  "frequency": 5,
+  "frequency": 2000,
   "checks": [
-    ""
-
-  ]
+    {
+      "name": "cms",
+      "type": "http",
+      "address": "http://localhost:9382",
+      "timeout": 5000,
+      "onFail": ["restart cms"]
+    }
+  ],
+  "outputs": {
+    "success": [
+      {"type": "stdout"}
+    ],
+    "failure": [
+      {"type": "stderr"},
+      {
+        "type": "file",
+        "path": "/var/log/opt/check.log"
+      }
+    ]
+  },
+  "actions": {
+    "restart cms": {
+      "type": "shell",
+      "command": "restart ",
+      "arguments": ["cms"]
+      "dir": "/opt/cms",
+      "retries": 5,
+      "delay": 1000,
+    }
+  }
 }
