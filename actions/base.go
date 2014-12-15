@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
+	"log"
 	"strings"
 	"time"
-	"log"
 )
 
 type Base struct {
 	retries int
-	name string
-	delay time.Duration
-	action core.Action
+	name    string
+	delay   time.Duration
+	action  core.Action
 }
 
 func (b *Base) Run() error {
@@ -49,10 +49,10 @@ func New(name string, t typed.Typed) core.Action {
 
 func build(name string, t typed.Typed, action core.Action) core.Action {
 	c := &Base{
-		name: name,
-		action: action,
+		name:    name,
+		action:  action,
 		retries: t.IntOr("retries", 0),
-		delay: time.Millisecond * time.Duration(t.IntOr("delay", 5000)),
+		delay:   time.Millisecond * time.Duration(t.IntOr("delay", 5000)),
 	}
 	return c
 }

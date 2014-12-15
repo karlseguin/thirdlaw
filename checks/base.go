@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
-	"strings"
 	"log"
+	"strings"
 	"time"
 )
 
