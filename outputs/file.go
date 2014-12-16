@@ -9,21 +9,29 @@ import (
 
 type File struct {
 	path     string
-	truncate bool
+	flags    int
 }
 
 func (o File) Process(results *core.Results) {
-	f, err := os.OpenFile(o.path, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
+	f, err := os.OpenFile(o.path, o.flags, 0600)
 	if err != nil {
 		log.Println("failed to open output file", o.path, err)
 		return
 	}
 	defer f.Close()
-	writeTo(results, f, false)
+	writeTo(results, f, true)
 }
 
 func NewFile(t typed.Typed) *File {
+	flags := os.O_CREATE | os.O_WRONLY
+	if t := t.BoolOr("truncate", false); t {
+		flags |= os.O_TRUNC
+	} else {
+		flags |= os.O_APPEND
+	}
+
 	return &File{
+		flags: flags,
 		path: t.StringOr("path", "failures.log"),
 	}
 }
