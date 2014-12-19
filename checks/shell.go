@@ -1,9 +1,9 @@
 package checks
 
 import (
-	"fmt"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
+	"log"
 	"os/exec"
 )
 
@@ -32,7 +32,7 @@ func (c *Shell) Run() *core.Result {
 func NewShell(t typed.Typed) *Shell {
 	command, ok := t.StringIf("command")
 	if ok == false {
-		panic(fmt.Sprintf("shell check must have a command parameter: %s", t.MustBytes("")))
+		log.Fatalf("shell check must have a command parameter: %s", t.MustBytes(""))
 	}
 	return &Shell{
 		command:   command,

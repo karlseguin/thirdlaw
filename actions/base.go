@@ -43,7 +43,8 @@ func New(name string, t typed.Typed) core.Action {
 	case "shell":
 		return build(name, t, NewShell(t))
 	default:
-		panic(fmt.Errorf("invalid action type %v", string(t.MustBytes(""))))
+		log.Fatalf("invalid action type %v", string(t.MustBytes("")))
+		return nil
 	}
 }
 

@@ -45,14 +45,15 @@ func New(ap core.ActionProvider, t typed.Typed) core.Check {
 	case "shell":
 		return build(ap, t, NewShell(t))
 	default:
-		panic(fmt.Errorf("unknown type %v", string(t.MustBytes(""))))
+		log.Fatalf("unknown type %v", string(t.MustBytes("")))
+		return nil
 	}
 }
 
 func build(ap core.ActionProvider, t typed.Typed, runner core.Runner) core.Check {
 	name, ok := t.StringIf("name")
 	if ok == false {
-		panic(fmt.Errorf("missing name %v", string(t.MustBytes(""))))
+		log.Fatalf("missing name %v", string(t.MustBytes("")))
 	}
 	return &Base{
 		ap:     ap,

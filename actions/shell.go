@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"gopkg.in/karlseguin/typed.v1"
+	"log"
 	"os/exec"
 	"strings"
 )
@@ -30,7 +31,7 @@ func (a *Shell) Run() error {
 func NewShell(t typed.Typed) *Shell {
 	command, ok := t.StringIf("command")
 	if ok == false {
-		panic(fmt.Sprintf("shell action must have a command parameter: %s", t.MustBytes("")))
+		log.Fatalf("shell action must have a command parameter: %s", t.MustBytes(""))
 	}
 	return &Shell{
 		command:   command,

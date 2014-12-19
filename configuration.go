@@ -6,8 +6,8 @@ import (
 	"github.com/karlseguin/thirdlaw/core"
 	"github.com/karlseguin/thirdlaw/outputs"
 	"gopkg.in/karlseguin/typed.v1"
-	"log"
 	"io/ioutil"
+	"log"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func (c *Configuration) GetAction(name string) core.Action {
 func loadConfig(path string) *Configuration {
 	t, err := typed.JsonFile(path)
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to read config file %s %v", path, err)
 	}
 	onFailure, onSuccess := t.Object("outputs").Objects("failure"), t.Object("outputs").Objects("success")
 	if len(onFailure) == 0 {
@@ -50,7 +50,7 @@ func loadConfig(path string) *Configuration {
 	if include, ok := t.StringIf("include"); ok {
 		files, err := ioutil.ReadDir(include)
 		if err != nil {
-			panic(err)
+			log.Fatalf("failed to read directory %q %v", include, err)
 		}
 		if include[len(include)-1] != '/' {
 			include += "/"
@@ -59,13 +59,14 @@ func loadConfig(path string) *Configuration {
 			if file.IsDir() {
 				continue
 			}
-			data, err := ioutil.ReadFile(include + file.Name())
+			fileName := include + file.Name()
+			data, err := ioutil.ReadFile(fileName)
 			if err != nil {
-				panic(err)
+				log.Fatalf("failed to read config %q %v", fileName, err)
 			}
 			t, err = typed.Json(data)
 			if err != nil {
-				panic(err)
+				log.Fatalf("failed to parse config %q %v", fileName, err)
 			}
 			loadOne(c, t)
 		}

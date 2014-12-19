@@ -1,10 +1,10 @@
 package outputs
 
 import (
-	"fmt"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"io"
+	"log"
 	"strings"
 )
 
@@ -19,7 +19,8 @@ func New(t typed.Typed) core.Output {
 	case "stderr":
 		return NewStderr(t)
 	default:
-		panic(fmt.Errorf("invalid output type %v", string(t.MustBytes(""))))
+		log.Fatalf("invalid output type %v", string(t.MustBytes("")))
+		return nil
 	}
 }
 
