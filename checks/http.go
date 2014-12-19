@@ -28,7 +28,7 @@ func (c *Http) Run() *core.Result {
 
 func NewHttp(t typed.Typed) *Http {
 	return &Http{
-		address: t.StringOr("address", "http://127.0.0.1:3000/"),
+		address: t.StringOr("address", "http://127.0.0.1/"),
 		client: &http.Client{
 			Timeout: time.Millisecond * time.Duration(t.IntOr("timeout", 5000)),
 		},

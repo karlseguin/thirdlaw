@@ -3,24 +3,14 @@ package thirdlaw
 import (
 	"github.com/karlseguin/thirdlaw/core"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
-var reload bool
-
 func Run(configPath string) {
 	config := loadConfig(configPath)
-	signals()
 	for {
 		time.Sleep(config.frequency)
 		run(config)
-		if reload {
-			config = loadConfig(configPath)
-			reload = false
-		}
 	}
 }
 
@@ -55,15 +45,4 @@ func swallow() {
 		log.Println("unhandled error", err)
 		time.Sleep(time.Second * 5)
 	}
-}
-
-func signals() {
-	sigusr2 := make(chan os.Signal, 1)
-	signal.Notify(sigusr2, syscall.SIGUSR2)
-	go func() {
-		for {
-			<-sigusr2
-			reload = true
-		}
-	}()
 }

@@ -11,7 +11,7 @@ import (
 
 type Base struct {
 	name   string
-	onFail []string
+	recover []string
 	runner core.Runner
 	ap     core.ActionProvider
 }
@@ -26,7 +26,7 @@ func (c *Base) Run() *core.Result {
 	res.Name = c.name
 	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
 	if res.Ok == false {
-		for _, actionName := range c.onFail {
+		for _, actionName := range c.recover {
 			action := c.ap.GetAction(actionName)
 			if action == nil {
 				log.Println(fmt.Sprintf("fail action %q is unknown for %q check", actionName, c.name))
@@ -59,6 +59,6 @@ func build(ap core.ActionProvider, t typed.Typed, runner core.Runner) core.Check
 		ap:     ap,
 		name:   name,
 		runner: runner,
-		onFail: t.Strings("onFail"),
+		recover: t.Strings("recover"),
 	}
 }
