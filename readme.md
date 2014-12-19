@@ -31,6 +31,11 @@ A small monitoring tool meant to stay out of your way. Specifically, it doesn't 
 
 The `include` directive can be used to specify a directory which contains additional configuration files. These files are limited to the `checks`, `check` and `actions` fields. A check in one file can reference an action in a different file.
 
+# Running Flags
+
+- `-config=config.json`: path to the config file
+- `-test`: to test the validity of specified config. An exit code of 0 means the file was valid.
+
 # Configuration Options
 
 ## frequency

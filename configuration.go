@@ -23,7 +23,7 @@ func (c *Configuration) GetAction(name string) core.Action {
 	return c.actions[name]
 }
 
-func loadConfig(path string) *Configuration {
+func LoadConfig(path string) *Configuration {
 	t, err := typed.JsonFile(path)
 	if err != nil {
 		log.Fatalf("failed to read config file %s %v", path, err)
@@ -46,7 +46,7 @@ func loadConfig(path string) *Configuration {
 	for i, output := range onSuccess {
 		c.onSuccess[i] = outputs.New(output)
 	}
-	loadOne(c, t)
+	loadConfig(c, t)
 	if include, ok := t.StringIf("include"); ok {
 		files, err := ioutil.ReadDir(include)
 		if err != nil {
@@ -68,13 +68,13 @@ func loadConfig(path string) *Configuration {
 			if err != nil {
 				log.Fatalf("failed to parse config %q %v", fileName, err)
 			}
-			loadOne(c, t)
+			loadConfig(c, t)
 		}
 	}
 	return c
 }
 
-func loadOne(c *Configuration, t typed.Typed) {
+func loadConfig(c *Configuration, t typed.Typed) {
 	for _, check := range t.Objects("checks") {
 		c.checks = append(c.checks, checks.New(c, check))
 	}

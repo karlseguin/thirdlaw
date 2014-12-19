@@ -7,7 +7,7 @@ import (
 )
 
 func Run(configPath string) {
-	config := loadConfig(configPath)
+	config := LoadConfig(configPath)
 	for {
 		time.Sleep(config.frequency)
 		run(config)
