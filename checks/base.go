@@ -10,10 +10,10 @@ import (
 )
 
 type Base struct {
-	name   string
+	name    string
 	recover []string
-	runner core.Runner
-	ap     core.ActionProvider
+	runner  core.Runner
+	ap      core.ActionProvider
 }
 
 func (c *Base) Name() string {
@@ -56,9 +56,9 @@ func build(ap core.ActionProvider, t typed.Typed, runner core.Runner) core.Check
 		log.Fatalf("missing name %v", string(t.MustBytes("")))
 	}
 	return &Base{
-		ap:     ap,
-		name:   name,
-		runner: runner,
+		ap:      ap,
+		name:    name,
+		runner:  runner,
 		recover: t.Strings("recover"),
 	}
 }
