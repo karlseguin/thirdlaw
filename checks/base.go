@@ -38,6 +38,8 @@ func New(actions map[string]core.Action, t typed.Typed) core.Check {
 	switch strings.ToLower(t.String("type")) {
 	case "http":
 		return build(actions, t, NewHttp(t))
+	case "shell":
+		return build(actions, t, NewShell(t))
 	default:
 		panic(fmt.Errorf("unknown type %v", string(t.MustBytes(""))))
 	}
