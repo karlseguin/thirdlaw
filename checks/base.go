@@ -11,8 +11,9 @@ import (
 
 type Base struct {
 	name   string
-	onFail []core.Action
+	onFail []string
 	runner core.Runner
+	ap     core.ActionProvider
 }
 
 func (c *Base) Name() string {
@@ -25,8 +26,11 @@ func (c *Base) Run() *core.Result {
 	res.Name = c.name
 	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
 	if res.Ok == false {
-		for _, fail := range c.onFail {
-			if err := fail.Run(); err != nil {
+		for _, actionName := range c.onFail {
+			action := c.ap.GetAction(actionName)
+			if action == nil {
+				log.Println(fmt.Sprintf("fail action %q is unknown for %q check", actionName, c.name))
+			} else if err := action.Run(); err != nil {
 				log.Println(err)
 			}
 		}
@@ -34,35 +38,26 @@ func (c *Base) Run() *core.Result {
 	return res
 }
 
-func New(actions map[string]core.Action, t typed.Typed) core.Check {
+func New(ap core.ActionProvider, t typed.Typed) core.Check {
 	switch strings.ToLower(t.String("type")) {
 	case "http":
-		return build(actions, t, NewHttp(t))
+		return build(ap, t, NewHttp(t))
 	case "shell":
-		return build(actions, t, NewShell(t))
+		return build(ap, t, NewShell(t))
 	default:
 		panic(fmt.Errorf("unknown type %v", string(t.MustBytes(""))))
 	}
 }
 
-func build(actions map[string]core.Action, t typed.Typed, runner core.Runner) core.Check {
+func build(ap core.ActionProvider, t typed.Typed, runner core.Runner) core.Check {
 	name, ok := t.StringIf("name")
 	if ok == false {
 		panic(fmt.Errorf("missing name %v", string(t.MustBytes(""))))
 	}
-	c := &Base{
+	return &Base{
+		ap:     ap,
 		name:   name,
 		runner: runner,
+		onFail: t.Strings("onFail"),
 	}
-	if failNames := t.Strings("onFail"); len(failNames) > 0 {
-		c.onFail = make([]core.Action, len(failNames))
-		for i, n := range failNames {
-			action, ok := actions[n]
-			if ok == false {
-				panic(fmt.Errorf("unknown action %q for check %q", n, name))
-			}
-			c.onFail[i] = action
-		}
-	}
-	return c
 }

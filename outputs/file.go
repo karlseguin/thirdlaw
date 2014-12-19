@@ -8,8 +8,8 @@ import (
 )
 
 type File struct {
-	path     string
-	flags    int
+	path  string
+	flags int
 }
 
 func (o File) Process(results *core.Results) {
@@ -32,6 +32,6 @@ func NewFile(t typed.Typed) *File {
 
 	return &File{
 		flags: flags,
-		path: t.StringOr("path", "failures.log"),
+		path:  t.StringOr("path", "failures.log"),
 	}
 }

@@ -1,9 +1,9 @@
 package checks
 
 import (
+	"fmt"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
-	"fmt"
 	"os/exec"
 )
 
@@ -38,6 +38,6 @@ func NewShell(t typed.Typed) *Shell {
 		command:   command,
 		dir:       t.String("dir"),
 		arguments: t.Strings("arguments"),
-		out:    t["out"],
+		out:       t["out"],
 	}
 }
