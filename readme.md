@@ -86,6 +86,7 @@ Makes an HTTP request. Any error or a response with a status code of 300 or more
 
 - `address`: the full address (scheme, host, port, path) to make the request to (defaults to http://127.0.0.1/)
 - `timeout`: the timeout, in milliseconds, to wait before getting a response (defaults to 5000).
+- `contains`: text that must exist in the response body to consider the check a success (defaults to none)
 
 ### shell
 Invokes the shell and runs the specified command. Any error running the command, include an exit code not equal to 0, will result in a failure. It's also possible to specify the expected output. The shell check accepts the following configuration values:
