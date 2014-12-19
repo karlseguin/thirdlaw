@@ -7,6 +7,7 @@ import (
 	"github.com/karlseguin/thirdlaw/outputs"
 	"gopkg.in/karlseguin/typed.v1"
 	"log"
+	"io/ioutil"
 	"time"
 )
 
@@ -46,6 +47,29 @@ func loadConfig(path string) *Configuration {
 		c.onSuccess[i] = outputs.New(output)
 	}
 	loadOne(c, t)
+	if include, ok := t.StringIf("include"); ok {
+		files, err := ioutil.ReadDir(include)
+		if err != nil {
+			panic(err)
+		}
+		if include[len(include)-1] != '/' {
+			include += "/"
+		}
+		for _, file := range files {
+			if file.IsDir() {
+				continue
+			}
+			data, err := ioutil.ReadFile(include + file.Name())
+			if err != nil {
+				panic(err)
+			}
+			t, err = typed.Json(data)
+			if err != nil {
+				panic(err)
+			}
+			loadOne(c, t)
+		}
+	}
 	return c
 }
 
@@ -56,5 +80,9 @@ func loadOne(c *Configuration, t typed.Typed) {
 	actns := t.Object("actions")
 	for name, _ := range actns {
 		c.actions[name] = actions.New(name, actns.Object(name))
+	}
+
+	if check, ok := t.ObjectIf("check"); ok {
+		c.checks = append(c.checks, checks.New(c, check))
 	}
 }
