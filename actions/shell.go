@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"bytes"
 	"fmt"
 	"gopkg.in/karlseguin/typed.v1"
 	"log"
@@ -16,14 +15,13 @@ type Shell struct {
 }
 
 func (a *Shell) Run() error {
-	var out bytes.Buffer
 	cmd := exec.Command(a.command, a.arguments...)
 	if len(a.dir) > 0 {
 		cmd.Dir = a.dir
 	}
-	cmd.Stderr = &out
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("error running %s %s\n   %s", a.command, strings.Join(a.arguments, " "), out.String())
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("error running %s %s\n   %s", a.command, strings.Join(a.arguments, " "), string(out))
 	}
 	return nil
 }
