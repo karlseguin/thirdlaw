@@ -64,6 +64,12 @@ Defines the outputs to send the results of an iteration to. Outputs can be sent 
   }
 }
 ```
+
+Every output supports:
+
+* `snooze`: time, in seconds, to wait before re-using this output. Snoozing allows you to keep a short frequency without worrying about flooding your output (it's particularly useful with the http output).
+
+
 ### stdout
 Writes the results to stdout
 
@@ -92,6 +98,7 @@ An example of using the HTTP output with OpsGenie:
 "failure": [
   {
     "type": "http",
+    "snooze": 300,
     "address": "https://api.opsgenie.com/v1/json/alert",
     "body": {
       "apiKey": "YOUR OPS GENIE API KEY",

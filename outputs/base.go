@@ -7,24 +7,47 @@ import (
 	"io"
 	"log"
 	"strings"
+	"time"
 )
 
 var newLine = []byte("\n")
 
+type Base struct {
+	next   time.Time
+	output core.Output
+	snooze time.Duration
+}
+
+func (o *Base) Process(results *core.Results) {
+	now := time.Now()
+	if now.After(o.next) {
+		o.output.Process(results)
+		o.next = now.Add(o.snooze)
+	}
+}
+
 func New(t typed.Typed) core.Output {
 	switch strings.ToLower(t.String("type")) {
 	case "file":
-		return NewFile(t)
+		return build(t, NewFile(t))
 	case "stdout":
-		return NewStdout(t)
+		return build(t, NewStdout(t))
 	case "stderr":
-		return NewStderr(t)
+		return build(t, NewStderr(t))
 	case "http":
-		return NewHttp(t)
+		return build(t, NewHttp(t))
 	default:
 		log.Fatalf("invalid output type %v", string(t.MustBytes("")))
 		return nil
 	}
+}
+
+func build(t typed.Typed, output core.Output) core.Output {
+	o := &Base{
+		output: output,
+		snooze: time.Second * time.Duration(t.IntOr("snooze", 0)),
+	}
+	return o
 }
 
 func writeTo(results *core.Results, writer io.Writer, newline bool) {
