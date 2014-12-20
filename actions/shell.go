@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"gopkg.in/karlseguin/typed.v1"
 	"log"
-	"os/exec"
+	"os"
 	"strings"
+	"syscall"
 )
 
 type Shell struct {
@@ -15,13 +16,9 @@ type Shell struct {
 }
 
 func (a *Shell) Run() error {
-	cmd := exec.Command(a.command, a.arguments...)
-	if len(a.dir) > 0 {
-		cmd.Dir = a.dir
-	}
-	out, err := cmd.CombinedOutput()
+	_, err := os.StartProcess(a.command, a.arguments, &os.ProcAttr{Dir: a.dir, Sys: &syscall.SysProcAttr{Setpgid: true}})
 	if err != nil {
-		return fmt.Errorf("error running %s %s\n   %s", a.command, strings.Join(a.arguments, " "), string(out))
+		return fmt.Errorf("error running %s %s\n   %s", a.command, strings.Join(a.arguments, " "))
 	}
 	return nil
 }

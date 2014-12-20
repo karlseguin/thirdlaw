@@ -132,7 +132,7 @@ Invokes the shell and runs the specified command. Any error running the command,
 - `out`: expected stdout text (defaults to ignoring any output)
 
 ## actions
-Actions are invoked when a check fails. Actions are run as invoked in a blocking manner. As a general rule, you'll want your actions to invoke scripts with launch whatever process has failed as a daemon. All actions accept the following configurations:
+Actions are invoked when a check fails
 
 - `retries`: how many times to retry the action should it fail (defaults to 0)
 - `delay`: how long to wait, in seconds, between failed retries (detauls to 1)
