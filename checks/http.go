@@ -43,7 +43,7 @@ func NewHttp(t typed.Typed) *Http {
 		contains: contains,
 		address:  t.StringOr("address", "http://127.0.0.1/"),
 		client: &http.Client{
-			Timeout: time.Millisecond * time.Duration(t.IntOr("timeout", 5000)),
+			Timeout: time.Second * time.Duration(t.IntOr("timeout", 5)),
 		},
 	}
 }

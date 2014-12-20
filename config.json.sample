@@ -1,11 +1,11 @@
 {
-  "frequency": 2000,
+  "frequency": 2,
   "checks": [
     {
       "name": "cms",
       "type": "http",
       "address": "http://localhost:9382",
-      "timeout": 5000,
+      "timeout": 5,
       "onFail": ["restart cms"]
     }
   ],
@@ -28,7 +28,7 @@
       "arguments": ["cms"]
       "dir": "/opt/cms",
       "retries": 5,
-      "delay": 1000,
+      "delay": 1,
     }
   }
 }

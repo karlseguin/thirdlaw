@@ -6,7 +6,7 @@ A small monitoring tool meant to stay out of your way. Specifically, it doesn't 
 
 ```json
 {
-  "frequency": 2000,
+  "frequency": 2,
   "outputs": {
     "failure": [{"type": "stderr"}]
   },
@@ -39,9 +39,9 @@ The `include` directive can be used to specify a directory which contains additi
 # Configuration Options
 
 ## frequency
-The time, in milliseconds, to run the checks. Checks are run in series, so the real "sleep" time is going to be the specified frequency + however long it takes to do all the checks and actions.
+The time, in seconds, to run the checks. Checks are run in series, so the real "sleep" time is going to be the specified frequency + however long it takes to do all the checks and actions.
 
-Defaults to 10 seconds (10000 milliseconds).
+Defaults to 10 seconds.
 
 ## include
 Specifies a directory to load additional configuration files from. All files within the directory are loaded. These child files are limited to defining `checks`, `check` and `actions`
@@ -112,7 +112,7 @@ All `checks` accept a `recover` option which is an array of `action` names to ru
 Makes an HTTP request. Any error or a response with a status code of 300 or more will result in a failure. The http check accepts the following configuration values:
 
 - `address`: the full address (scheme, host, port, path) to make the request to (defaults to http://127.0.0.1/)
-- `timeout`: the timeout, in milliseconds, to wait before getting a response (defaults to 5000).
+- `timeout`: the timeout, in seconds, to wait before getting a response (defaults to 5).
 - `contains`: text that must exist in the response body to consider the check a success (defaults to none)
 
 ### shell
@@ -127,9 +127,9 @@ Invokes the shell and runs the specified command. Any error running the command,
 Actions are invoked when a check fails. Actions are run as invoked in a blocking manner. As a general rule, you'll want your actions to invoke scripts with launch whatever process has failed as a daemon. All actions accept the following configurations:
 
 - `retries`: how many times to retry the action should it fail (defaults to 0)
-- `delay`: how long to wait, in milliseconds, between failed retries (detauls to 1000)
+- `delay`: how long to wait, in seconds, between failed retries (detauls to 1)
 
-Remember, if you're frequence is set to 10000 and you have a single check with a single action that has a retry of 5 and a delay of 1000, the worst case check frequency is 15 seconds (10000 + 1000 * 5) as everything happens synchronously.
+Remember, if you're frequence is set to 10 and you have a single check with a single action that has a retry of 5 and a delay of 1, the worst case check frequency is 15 seconds (10 + 1 * 5) as everything happens synchronously.
 
 ### shell
 Invokes the shell and runs the specified command. The shell action accepts the following configuration values:

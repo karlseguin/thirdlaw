@@ -53,7 +53,7 @@ func build(name string, t typed.Typed, action core.Action) core.Action {
 		name:    name,
 		action:  action,
 		retries: t.IntOr("retries", 0),
-		delay:   time.Millisecond * time.Duration(t.IntOr("delay", 1000)),
+		delay:   time.Second * time.Duration(t.IntOr("delay", 1)),
 	}
 	return c
 }

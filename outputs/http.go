@@ -61,7 +61,7 @@ func NewHttp(t typed.Typed) *Http {
 		address: address,
 		body:    body,
 		client: &http.Client{
-			Timeout: time.Millisecond * time.Duration(t.IntOr("timeout", 5000)),
+			Timeout: time.Second * time.Duration(t.IntOr("timeout", 5)),
 		},
 	}
 }

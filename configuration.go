@@ -38,7 +38,7 @@ func LoadConfig(path string) *Configuration {
 		actions:   make(map[string]core.Action),
 		onFailure: make([]core.Output, len(onFailure)),
 		onSuccess: make([]core.Output, len(onSuccess)),
-		frequency: time.Millisecond * time.Duration(t.IntOr("frequency", 10000)),
+		frequency: time.Second * time.Duration(t.IntOr("frequency", 10)),
 	}
 	for i, output := range onFailure {
 		c.onFailure[i] = outputs.New(output)
