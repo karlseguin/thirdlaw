@@ -18,7 +18,7 @@ type Shell struct {
 func (a *Shell) Run() error {
 	_, err := os.StartProcess(a.command, a.arguments, &os.ProcAttr{Dir: a.dir, Sys: &syscall.SysProcAttr{Setpgid: true}})
 	if err != nil {
-		return fmt.Errorf("error running %s %s\n   %s", a.command, strings.Join(a.arguments, " "))
+		return fmt.Errorf("error running %s %s", a.command, strings.Join(a.arguments, " "))
 	}
 	return nil
 }
