@@ -13,12 +13,16 @@ import (
 var newLine = []byte("\n")
 
 type Base struct {
-	next   time.Time
-	output core.Output
-	snooze time.Duration
+	next     time.Time
+	output   core.Output
+	snooze   time.Duration
+	disabled bool
 }
 
 func (o *Base) Process(results *core.Results) {
+	if o.disabled {
+		return
+	}
 	now := time.Now()
 	if now.After(o.next) {
 		o.output.Process(results)
@@ -44,8 +48,9 @@ func New(t typed.Typed) core.Output {
 
 func build(t typed.Typed, output core.Output) core.Output {
 	o := &Base{
-		output: output,
-		snooze: time.Second * time.Duration(t.IntOr("snooze", 0)),
+		output:   output,
+		disabled: t.BoolOr("disabled", false),
+		snooze:   time.Second * time.Duration(t.IntOr("snooze", 0)),
 	}
 	return o
 }

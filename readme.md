@@ -68,6 +68,7 @@ Defines the outputs to send the results of an iteration to. Outputs can be sent 
 Every output supports:
 
 * `snooze`: time, in seconds, to wait before re-using this output. Snoozing allows you to keep a short frequency without worrying about flooding your output (it's particularly useful with the http output).
+* `disabled`: disables the output (defaults to false)
 
 
 ### stdout
