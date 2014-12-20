@@ -24,7 +24,7 @@ func (o Http) Process(results *core.Results) {
 	var body io.Reader
 	if o.body != nil {
 		method = "POST"
-		body = bytes.NewBuffer(o.body.([]byte))
+		body = bytes.NewBuffer(buildBody(o.body.([]byte), results))
 	}
 	req, err := http.NewRequest(method, o.address, body)
 	if err != nil {

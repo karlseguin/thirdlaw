@@ -1,6 +1,7 @@
 package outputs
 
 import (
+	"bytes"
 	"github.com/karlseguin/thirdlaw/core"
 	"gopkg.in/karlseguin/typed.v1"
 	"io"
@@ -31,4 +32,8 @@ func writeTo(results *core.Results, writer io.Writer, newline bool) {
 	if newline {
 		writer.Write(newLine)
 	}
+}
+
+func buildBody(body []byte, r *core.Results) []byte {
+	return bytes.Replace(body, []byte(`"$FRIENDLY$"`), r.Friendly(), -1)
 }

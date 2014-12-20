@@ -84,6 +84,25 @@ Sends the response to an HTTP endpoint. The http output accepts the following co
 
 This will issue a GET if `body` is empty. A POST is made otherwise.
 
+It's possible to use the $FRIENDLY$ placeholder within the body in order to generate a simple but friendly error message.
+
+An example of using the HTTP output with OpsGenie:
+
+```json
+"failure": [
+  {
+    "type": "http",
+    "address": "https://api.opsgenie.com/v1/json/alert",
+    "body": {
+      "apiKey": "YOUR OPS GENIE API KEY",
+      "message": "$FRIENDLY$",
+      "recipients": "YOUR_ALERT_EMAIL",
+      "alias": "health check"
+    }
+  }
+]
+```
+
 ## checks and check
 `checks` and `check` define the code to execute on each iteration. The two fields are only different in that `checks` is an array of `check`.
 
