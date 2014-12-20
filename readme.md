@@ -76,6 +76,14 @@ Writes the results to a specified file. The file output accepts the following co
 - `path`: the filepath to write results to (defaults to failures.log)
 - `truncate`: whether or not to truncate the file before each write (defaults to false)
 
+### http
+Sends the response to an HTTP endpoint. The http output accepts the following configuration values:
+
+- `address`: REQUIRED full http path (scheme, host, port, url) (no default)
+- `body`: An optional body to send. This can either be a string, or a nested object. In the case of a nested object / array, the body will be converted to JSON. (defaults to empty)
+
+This will issue a GET if `body` is empty. A POST is made otherwise.
+
 ## checks and check
 `checks` and `check` define the code to execute on each iteration. The two fields are only different in that `checks` is an array of `check`.
 

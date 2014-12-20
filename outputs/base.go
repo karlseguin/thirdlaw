@@ -18,6 +18,8 @@ func New(t typed.Typed) core.Output {
 		return NewStdout(t)
 	case "stderr":
 		return NewStderr(t)
+	case "http":
+		return NewHttp(t)
 	default:
 		log.Fatalf("invalid output type %v", string(t.MustBytes("")))
 		return nil
