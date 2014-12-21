@@ -8,7 +8,22 @@ A small monitoring tool meant to stay out of your way. Specifically, it doesn't 
 {
   "frequency": 2,
   "outputs": {
-    "failure": [{"type": "stderr"}]
+    "success": [{
+      "type": "file",
+      "truncate": true,
+      "path": "last.log"
+    }],
+    "failure": [
+      {
+        "type": "file",
+        "truncate": true,
+        "path": "last.log"
+      },
+      {
+        "type": "stderr",
+        "snooze": 120
+      }
+    ]
   },
   "checks": [{
     "name": "redis",
