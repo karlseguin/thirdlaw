@@ -24,11 +24,11 @@
   "actions": {
     "restart cms": {
       "type": "shell",
-      "command": "restart ",
-      "arguments": ["cms"]
+      "command": "restart",
+      "arguments": ["cms"],
       "dir": "/opt/cms",
       "retries": 5,
-      "delay": 1,
+      "delay": 1
     }
   }
 }
