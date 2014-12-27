@@ -129,7 +129,10 @@ An example of using the HTTP output with OpsGenie:
 ## checks and check
 `checks` and `check` define the code to execute on each iteration. The two fields are only different in that `checks` is an array of `check`.
 
-All `checks` accept a `recover` option which is an array of `action` names to run in case of failure.
+All `checks` accept:
+
+- `recover`: an array of `action` names to run in case of failure (defaults to none)
+- `snooze`: time in second to wait before running the check again, essentially allowing checks to run at custom frequencies (defaults to 0, meaning the global frequency is used).
 
 ### http
 Makes an HTTP request. Any error or a response with a status code of 300 or more will result in a failure. The http check accepts the following configuration values:

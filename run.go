@@ -23,6 +23,9 @@ func run(config *Configuration) {
 
 	for i := 0; i < l; i++ {
 		result := config.checks[i].Run()
+		if result == nil {
+			continue
+		}
 		if result.Ok {
 			success = append(success, result)
 		} else {
@@ -34,9 +37,11 @@ func run(config *Configuration) {
 	if len(failures) > 0 {
 		outputs, list = config.onFailure, failures
 	}
-	results := core.NewResults(list)
-	for _, output := range outputs {
-		output.Process(results)
+	if len(list) > 0 {
+		results := core.NewResults(list)
+		for _, output := range outputs {
+			output.Process(results)
+		}
 	}
 }
 

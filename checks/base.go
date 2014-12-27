@@ -13,6 +13,8 @@ type Base struct {
 	name    string
 	recover []string
 	runner  core.Runner
+	next    time.Time
+	snooze  time.Duration
 	ap      core.ActionProvider
 }
 
@@ -22,6 +24,10 @@ func (c *Base) Name() string {
 
 func (c *Base) Run() *core.Result {
 	s := time.Now()
+	if s.Before(c.next) {
+		return nil
+	}
+
 	res := c.runner.Run()
 	res.Name = c.name
 	res.Milliseconds = int(time.Now().Sub(s).Nanoseconds() / 1000000)
@@ -35,6 +41,7 @@ func (c *Base) Run() *core.Result {
 			}
 		}
 	}
+	c.next = s.Add(c.snooze)
 	return res
 }
 
@@ -60,5 +67,6 @@ func build(ap core.ActionProvider, t typed.Typed, runner core.Runner) core.Check
 		name:    name,
 		runner:  runner,
 		recover: t.Strings("recover"),
+		snooze:  time.Second * time.Duration(t.IntOr("snooze", 0)),
 	}
 }
