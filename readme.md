@@ -133,6 +133,7 @@ All `checks` accept:
 
 - `recover`: an array of `action` names to run in case of failure (defaults to none)
 - `snooze`: time in second to wait before running the check again, essentially allowing checks to run at custom frequencies (defaults to 0, meaning the global frequency is used).
+- `failcount`: the number of times a check must fail before considered a failure. After a failure, this counter is reset (defaults to 1).
 
 ### http
 Makes an HTTP request. Any error or a response with a status code of 300 or more will result in a failure. The http check accepts the following configuration values:

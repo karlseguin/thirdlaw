@@ -12,9 +12,11 @@ var serializedError = []byte(`{"error": "failed to serialize results"}`)
 
 type Result struct {
 	Ok           bool   `json:"ok"`
+	Silent       bool   `json:"silent"`
 	Name         string `json:"name"`
 	Message      string `json:"message"`
 	Milliseconds int    `json:"ms"`
+	Failures     int    `json:"failures"`
 }
 
 func Success() *Result {

@@ -23,7 +23,7 @@ func run(config *Configuration) {
 
 	for i := 0; i < l; i++ {
 		result := config.checks[i].Run()
-		if result == nil {
+		if result == nil || result.Silent == true {
 			continue
 		}
 		if result.Ok {
