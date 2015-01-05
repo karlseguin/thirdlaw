@@ -38,12 +38,6 @@ func (c *Base) Run() *core.Result {
 		c.failures = 0
 		return res
 	}
-	c.failures++
-	res.Failures = c.failures
-	if c.failures%c.failCount != 0 {
-		res.Silent = true
-		return res
-	}
 	for _, actionName := range c.recover {
 		action := c.ap.GetAction(actionName)
 		if action == nil {
@@ -51,6 +45,11 @@ func (c *Base) Run() *core.Result {
 		} else if err := action.Run(); err != nil {
 			log.Println(err)
 		}
+	}
+	c.failures++
+	res.Failures = c.failures
+	if c.failures%c.failCount != 0 {
+		res.Silent = true
 	}
 	return res
 }
